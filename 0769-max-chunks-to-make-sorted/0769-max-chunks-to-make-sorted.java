@@ -1,17 +1,27 @@
-class Solution
-{
-    public int maxChunksToSorted(int[] arr) 
-    {//index corresponds to the sorting order
-        int max=0,count=0;
-        
-        for(int i=0;i<arr.length;i++)//traversing 
-        {
-            max=Math.max(arr[i],max);//calculating the maximum for every element 
-            
-            if(i==max)//partition upper limit found(unsorted region lies in this region)
-                count+=1;//increasing the partiton count that has to be sorted, to get an ascending sorted array
+class Solution {
+    public int maxChunksToSorted(int[] arr) {
+        int u=arr.length;
+        int mid=u/2;
+        int[] p=new int[mid];
+        int[] r=new int[u-mid];
+        for(int e=0;e<mid;e++){
+            p[e]=arr[e];
         }
+        for(int e=mid;e<u;e++){
+            r[e-mid]=arr[e];
+        }
+        Arrays.sort(p);
+        Arrays.sort(r);
         
-        return count;//returing the maximum numer of partision required 
+        int sd=0;
+        int sm=0;
+        
+        for(int y=0;y<u;y++){
+            sd=Math.max(sd,arr[y]);
+            if(sd==y){
+                sm++;
+            }
+        }
+        return sm;
     }
 }
