@@ -1,41 +1,35 @@
 class Solution {
     public boolean canChange(String start, String target) {
-        if (start.equals(target)) {
-            return true;
+        if(start.length()!=target.length()){
+            return false;
         }
-        int waitL = 0;
-        int waitR = 0;
-        
-        for (int i = 0; i < start.length(); i++) {
-            char curr = start.charAt(i);
-            char goal = target.charAt(i);
-            
-            if (curr == 'R') {
-                if (waitL > 0) {
-                    return false;
-                }
-                waitR++;
-            }
-            if (goal == 'L') {
-                if (waitR > 0) {
-                    return false;
-                }
-                waitL++;
-            }
-            if (goal == 'R') {
-                if (waitR == 0) {
-                    return false;
-                }
-                waitR--;
-            }
-            if (curr == 'L') {
-                if (waitL == 0) {
-                    return false;
-                }
-                waitL--;
-            }
+        String startPieces = start.replace("_", "");
+        String targetPieces = target.replace("_", "");
+        if (!startPieces.equals(targetPieces)) {
+            return false;
         }
-        
-        return waitL == 0 && waitR == 0;
+        int sd=start.length();
+        int e=0,y=0;
+        while(e<sd && y<sd){
+            while(e<sd && start.charAt(e)=='_') 
+                e++;
+            while(y<sd && target.charAt(y)=='_')
+                y++;
+            if(e==sd || y==sd){
+                break;
+            }
+            if(start.charAt(e)!=target.charAt(y)){
+                return false;
+            }
+            if(start.charAt(e)=='L' && e<y){
+                return false;
+            }
+            if(start.charAt(e)=='R' && e>y){
+                return false;
+            }
+            e++;
+            y++;
+        }
+        return true;
     }
 }
