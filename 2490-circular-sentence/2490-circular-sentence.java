@@ -1,15 +1,16 @@
 class Solution {
-    public boolean isCircularSentence(String s) {
-        for(int i=0;i<s.length();i++)
-        {
-            if(s.charAt(i)==' ')
-            {
-                if(s.charAt(i-1)!=s.charAt(i+1))
-                {
+    public boolean isCircularSentence(String sentence) {
+        int u=sentence.length();
+        if(sentence.charAt(0)!=sentence.charAt(u-1)){
+            return false;
+        }
+        for(int e=1;e<u;e++){
+            if(sentence.charAt(e)==' '){
+                if(sentence.charAt(e-1)!=sentence.charAt(e+1)){
                     return false;
                 }
             }
         }
-        return s.charAt(0) == s.charAt(s.length()-1);
+        return true;
     }
 }
