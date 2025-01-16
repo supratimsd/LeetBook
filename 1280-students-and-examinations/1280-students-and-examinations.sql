@@ -1,0 +1,2 @@
+# Write your MySQL query statement below
+select s1.student_id,s1.student_name,s2.subject_name,(select count(*) from Examinations e where s1.student_id=e.student_id and e.subject_name=s2.subject_name) as attended_exams from Students s1, Subjects s2 order by s1.student_id, s2.subject_name;
