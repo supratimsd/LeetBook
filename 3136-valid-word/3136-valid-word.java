@@ -1,30 +1,24 @@
-class Solution {
-    public boolean isValid(String word) {
-        word=word.toLowerCase();
-        int n=word.length();
-        String vowelMap="aeiou";
-        String consonantMap="bcdfghjklmnpqrstvwxyz";
-        int vowel=0,consonant=0,digitCount=0;
-        if(n>=3){
-            
-        for(char ch : word.toCharArray()){
-            if(Character.isDigit(ch)){
-                digitCount++;
-            }
-            else if(vowelMap.contains(String.valueOf(ch))){
-                vowel++;
-            }
-            else if(consonantMap.contains(String.valueOf(ch))){
-                consonant++;
-            }
-            else{
+public class Solution {
+    public boolean isValid(String s) {
+        int n = s.length();
+        if (n < 3) {
+            return false;
+        }
+
+        int vowels = 0;
+        int consonants = 0;
+
+        for (char c : s.toCharArray()) {
+            if (Character.isLetter(c)) {
+                if ("aeiouAEIOU".indexOf(c) != -1) {
+                    vowels++;
+                } else {
+                    consonants++;
+                }
+            } else if (!Character.isDigit(c)) {
                 return false;
             }
         }
-            
-            
-        }
-        return vowel>=1 && consonant>=1;
-                
+        return vowels >= 1 && consonants >= 1;
     }
 }
