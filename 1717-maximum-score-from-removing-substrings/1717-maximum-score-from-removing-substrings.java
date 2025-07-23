@@ -1,44 +1,39 @@
 class Solution {
     public int maximumGain(String s, int x, int y) {
-        if(y>x)
-        {
-           return helper(s,y,x,'b','a');
-        }
-        else
-        {
-          return helper(s,x,y,'a','b');
-        }
-    }
+        int score = 0;
+        char[] chars = s.toCharArray();
+        int len = chars.length;
+        char ch1 = 'a', ch2 = 'b';
+        int cnt1 = 0, cnt2 = 0;
 
-   public int helper(String s,int high,int low,char first,char second)
-    {
-        StringBuilder sb=new StringBuilder();
-        int total=0;
-
-        for(char c:s.toCharArray())
-        {
-            if(sb.length()>0 && sb.charAt(sb.length()-1)==first && c==second)
-            {
-                sb.deleteCharAt(sb.length()-1);
-                total+=high;
-            }
-            else {
-                sb.append(c);
-            }
+        if (x < y) {
+            int temp = x;
+            x = y;
+            y = temp;
+            ch1 = 'b';
+            ch2 = 'a';
         }
-        StringBuilder result=new StringBuilder();
-        for(char c:sb.toString().toCharArray())
-        {
-            if(result.length()>0 && result.charAt(result.length()-1)==second && c==first)
-            {
-                result.deleteCharAt(result.length()-1);
-                total+=low;
-            }
-            else {
-                result.append(c);
+
+        for (int i = 0; i < len; i++) {
+            if (chars[i] == ch1) {
+                cnt1++;
+            } else if (chars[i] == ch2) {
+                if (cnt1 > 0) {
+                    cnt1--;
+                    score += x;
+                } else {
+                    cnt2++;
+                }
+            } else {
+                score += Math.min(cnt1, cnt2) * y;
+                cnt1 = 0;
+                cnt2 = 0;
             }
         }
 
-        return total;
+        if (cnt1 != 0)
+            score += Math.min(cnt1, cnt2) * y;
+
+        return score;
     }
 }
