@@ -1,27 +1,37 @@
+
 class Solution {
     public double maxAverageRatio(int[][] classes, int extraStudents) {
-        PriorityQueue<double[]> pq = new PriorityQueue<>(new Comparator<double[]>(){
-            public int compare(double[] a, double[] b){
-                double adiff = (a[0]+1)/(a[1]+1) - (a[0]/a[1]);                
-                double bdiff = (b[0]+1)/(b[1]+1) - (b[0]/b[1]);
-                if(adiff==bdiff) return 0;
-                return adiff>bdiff? -1:1;
+        PriorityQueue<double[]> pq = new PriorityQueue<>(new Comparator<double[]>() {
+            public int compare(double[] a, double[] b) {
+                if (a[0] < b[0]) return 1;
+                if (a[0] > b[0]) return -1;
+                return 0;
             }
         });
-        
-        for(int[] c:classes) pq.add(new double[]{c[0],c[1]});
-        
-        for(int i =0;i<extraStudents;i++){
-            double[] curr = pq.poll();
-            pq.add(new double[]{curr[0]+1,curr[1]+1});
+
+        for (int i = 0; i < classes.length; i++) {
+            double pass = classes[i][0];
+            double total = classes[i][1];
+            double inc = (pass + 1.0) / (total + 1.0) - pass / total;
+            pq.offer(new double[]{inc, pass, total});
         }
-        
-        double sum = 0;
-        while(!pq.isEmpty()){
-            double[] curr = pq.poll();
-            sum+=curr[0]/curr[1];
+
+        while (extraStudents > 0) {
+            double[] top = pq.poll();
+            double pass = top[1] + 1;
+            double total = top[2] + 1;
+            double inc = (pass + 1.0) / (total + 1.0) - pass / total;
+            pq.offer(new double[]{inc, pass, total});
+            extraStudents--;
         }
-        
-        return sum/classes.length;
+
+        double sum = 0.0;
+        Object[] arr = pq.toArray();
+        for (int i = 0; i < arr.length; i++) {
+            double[] c = (double[]) arr[i];
+            sum += c[1] / c[2];
+        }
+
+        return sum / classes.length;
     }
 }
